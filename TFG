@@ -1,16 +1,37 @@
 // FINAL PROJECT DEGREE
+
 #include <stdio.h>
-#include "Adafruit_NeoPixel.h"
-#include "OneWire.h"
-#include "DallasTemperature.h"
+#include <Adafruit_NeoPixel.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <FastLED.h>
+
+//Es declaren constants
+
+const uint8_t PIN_DTemp = A3;
+
+//Instancies a les classes OneWire i DallasTemperature
+
+uint16_t TempS0 = 0;
+uint16_t TempS1 = 0;
+
+OneWire oneWireObj1(PIN_DTemp);
+DallasTemperature sensorT(&oneWireObj1);
+
+
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(115200);
 
+  sensorT.begin();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  sensorT.requestTemperatures();
+
+  TempS0 = sensorT.getTempCByIndex(0);
+  TempS1 = sensorT.getTempCByIndex(1);
 
 }
-
