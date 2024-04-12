@@ -9,29 +9,129 @@
 //Es declaren constants
 
 const uint8_t PIN_DTemp = A3;
+const uint8_t PIN_LEDs = A2;
+const uint8_t PIN_RPM2 = A1;
+const uint8_t PIN_RPM1 = A0;
+const uint8_t PIN_PWM1 = 3;
+const uint8_t PIN_FAN1 = 5;
+const uint8_t PIN_FAN2 = 6;
+const uint8_t PIN_FAN3 = 8;
+const uint8_t PIN_RPM3 = 9;
+const uint8_t PIN_FAN4 = 10;
+const uint8_t PIN_FAN5 = 11;
+const uint8_t PIN_RPM4 = 12;
+const uint8_t PIN_RPM5 = 13;
 
-//Instancies a les classes OneWire i DallasTemperature
+//Es declaren tipus de variables i els seus possibles valors
+
+typedef enum {MANUAL, AUTOMATIC} Operation_Mode;
+typedef enum {NORMAL, ECO, GAMING} Function_Mode;
+
+//Es declaren variables globals
 
 uint16_t TempS0 = 0;
 uint16_t TempS1 = 0;
+Operation_Mode OPM = AUTOMATIC;
+Function_Mode FUM = NORMAL;
+long tiempo = millis();
+uint16_t t_muestreo = 1000; 
 
-OneWire oneWireObj1(PIN_DTemp);
-DallasTemperature sensorT(&oneWireObj1);
+//Cream classe ventilador
 
+class Ventilador{
+  private:
+    uint8_t pin;
+  public:
+    Ventilador(uint8_t PIN_CONTROL){
+      pin = PIN_CONTROL;
+    }
+
+    uint8_t num_pines(){
+      pinMode(pin, OUTPUT);
+      digitalWrite(pin, HIGH);
+
+      uint8_t lectura = digitalRead(pin);
+      uint8_t numero;
+      if(lectura == HIGH){
+        numero = 4;
+      }else{
+        numero = 3;
+      }
+      return numero;
+    }
+
+};
+
+//Cream objectes
+
+Ventilador Ventilador1(PIN_FAN1);
+Ventilador Ventilador2(PIN_FAN2);
+Ventilador Ventilador3(PIN_FAN3);
+Ventilador Ventilador4(PIN_FAN4);
+Ventilador Ventilador5(PIN_FAN5);
+
+//Instancies a les classes OneWire i DallasTemperature
+
+OneWire oneWireObj(PIN_DTemp);
+DallasTemperature sensorT(&oneWireObj);
+
+void getTemperature(){
+  sensorT.requestTemperatures();
+
+  TempS0 = sensorT.getTempCByIndex(0);
+  TempS1 = sensorT.getTempCByIndex(1);
+}
 
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
 
+  pinMode(PIN_DTemp, INPUT);
+  pinMode(PIN_LEDs, OUTPUT);
+  pinMode(PIN_RPM2, INPUT);
+  pinMode(PIN_RPM1, INPUT);
+  pinMode(PIN_PWM1, INPUT);
+  pinMode(PIN_FAN1, OUTPUT);
+  pinMode(PIN_FAN2, OUTPUT);
+  pinMode(PIN_FAN3, OUTPUT);
+  pinMode(PIN_RPM3, INPUT);
+  pinMode(PIN_FAN4, OUTPUT);
+  pinMode(PIN_FAN5, OUTPUT);
+  pinMode(PIN_RPM4, INPUT);
+  pinMode(PIN_RPM5, INPUT);
+
   sensorT.begin();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  sensorT.requestTemperatures();
 
-  TempS0 = sensorT.getTempCByIndex(0);
-  TempS1 = sensorT.getTempCByIndex(1);
+  getTemperature();
+  uint8_t pines_Vent1 = Ventilador1.num_pines();
+  uint8_t pines_Vent2 = Ventilador2.num_pines();
+  uint8_t pines_Vent3 = Ventilador3.num_pines();
+  uint8_t pines_Vent4 = Ventilador4.num_pines();
+  uint8_t pines_Vent5 = Ventilador5.num_pines();
+
+
+  if(OPM == MANUAL){
+
+  }else if(OPM == AUTOMATIC){
+    switch (FUM){
+      case NORMAL:
+
+        break;
+      case ECO:
+
+        break;
+      case GAMING:
+
+        break
+      default:
+
+        break;    
+    }
+  }
 
 }
