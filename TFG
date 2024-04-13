@@ -21,6 +21,7 @@ const uint8_t PIN_FAN4 = 10;
 const uint8_t PIN_FAN5 = 11;
 const uint8_t PIN_RPM4 = 12;
 const uint8_t PIN_RPM5 = 13;
+const uint8_t NUM_LEDs = 60;
 
 //Es declaren tipus de variables i els seus possibles valors
 
@@ -34,7 +35,9 @@ uint16_t TempS1 = 0;
 Operation_Mode OPM = AUTOMATIC;
 Function_Mode FUM = NORMAL;
 long tiempo = millis();
-uint16_t t_muestreo = 1000; 
+uint16_t t_muestreo = 1000;
+byte bright = 50;
+byte baza = 0;
 
 //Cream classe ventilador
 
@@ -75,6 +78,8 @@ Ventilador Ventilador5(PIN_FAN5);
 OneWire oneWireObj(PIN_DTemp);
 DallasTemperature sensorT(&oneWireObj);
 
+CRGB leds[NUM_LEDs];
+
 void getTemperature(){
   sensorT.requestTemperatures();
 
@@ -102,12 +107,19 @@ void setup() {
   pinMode(PIN_RPM5, INPUT);
 
   sensorT.begin();
+
+  //Configura la llibreria FastLED per treballar amb LEDs WS2812 connectats al pin especificat (PIN) amb l'ordre de colors GRB (vermell, verd, blau). També s'hi aplica una correcció de color típica per a la tira LED.
+
+  FastLED.addLeds <WS2812, PIN_LEDs, GRB>(leds, NUM_LEDs).setCorrection(TypicalLEDStrip); 
+  FastLED.setBrightness(50);
+
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
   getTemperature();
+
   uint8_t pines_Vent1 = Ventilador1.num_pines();
   uint8_t pines_Vent2 = Ventilador2.num_pines();
   uint8_t pines_Vent3 = Ventilador3.num_pines();
@@ -120,6 +132,13 @@ void loop() {
   }else if(OPM == AUTOMATIC){
     switch (FUM){
       case NORMAL:
+        //Tratament de LEDs
+        fadeToBlackBy(leds, NUM_LEDS, 2);
+        int pos = beatsin16(13, 0, NUM_LEDS - 1);
+        leds[pos] += CHSV(baza++, 255, 192);
+        FastLED.setBrightness(bright);
+        FastLED.show();
+
 
         break;
       case ECO:
@@ -127,8 +146,14 @@ void loop() {
         break;
       case GAMING:
 
-        break
+        break;
       default:
+
+        break;    
+    }
+  }
+
+}
 
         break;    
     }
