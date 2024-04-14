@@ -5,6 +5,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <FastLED.h>
+#include <ArduinoJson.h>
 
 //Es declaren constants
 
@@ -44,6 +45,11 @@ byte baza = 0;
 uint8_t PWM_value = 0;
 uint16_t lastT_Average = 0;
 uint16_t T_Average = 0;
+uint16_t RPM_FAN1 = 0;
+uint16_t RPM_FAN2 = 0;
+uint16_t RPM_FAN3 = 0;
+uint16_t RPM_FAN4 = 0;
+uint16_t RPM_FAN5 = 0;
 
 //Cream classe ventilador
 
@@ -126,9 +132,8 @@ void loop() {
   while(true){
 
     if(Serial.available() > 0){
-      OPM = Serial.read();
-      FUM = Serial.read();
-    }
+      DeserializeArray();
+    }  
     
     getTemperature();
     lastT_Average = T_Average;
@@ -207,7 +212,42 @@ void loop() {
         analogWrite(PIN_FAN4, PWM_value);
         analogWrite(PIN_FAN5, PWM_value);
     }
+    SerializeArray();
   }
+}
+
+void SerializeArray()
+{
+    String json1;
+    StaticJsonDocument<300> doc;
+    doc.add(T_Average);
+    doc.add(RPM_FAN1);
+    doc.add(RPM_FAN2);
+    doc.add(RPM_FAN3);
+    doc.add(RPM_FAN4);
+    doc.add(RPM_FAN5);
+
+    serializeJson(doc, json1);
+    Serial.println(json1);
+}
+
+void DeserializeArray()
+{
+    String dades;
+    String json2 = dades;
+
+    StaticJsonDocument<300> doc;
+    DeserializationError error = deserializeJson(doc, json2);
+    if (error) { return; }
+
+    OPM = doc[0];
+    FUM = doc[1];
+    EF_LED = doc[2];
+    RPM_FAN1 = doc[3];
+    RPM_FAN2 = doc[4];
+    RPM_FAN3 = doc[5];
+    RPM_FAN4 = doc[6];
+    RPM_FAN5 = doc[7];
 }
 
 // *************************
