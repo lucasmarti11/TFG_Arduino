@@ -12,13 +12,13 @@ const uint8_t PIN_DTemp = A3;
 const uint8_t PIN_LEDs = A2;
 const uint8_t PIN_RPM2 = A1;
 const uint8_t PIN_RPM1 = A0;
-const uint8_t PIN_PWM1 = 3;
-const uint8_t PIN_FAN1 = 5;
-const uint8_t PIN_FAN2 = 6;
-const uint8_t PIN_FAN3 = 8;
-const uint8_t PIN_RPM3 = 9;
-const uint8_t PIN_FAN4 = 10;
-const uint8_t PIN_FAN5 = 11;
+const uint8_t PIN_PWM1 = 3; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN1 = 5; //Freqüència PWM = 980Hz
+const uint8_t PIN_FAN2 = 6; //Freqüència PWM = 980Hz
+const uint8_t PIN_FAN3 = 8; 
+const uint8_t PIN_RPM3 = 9; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN4 = 10; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN5 = 11; //Freqüència PWM = 490Hz
 const uint8_t PIN_RPM4 = 12;
 const uint8_t PIN_RPM5 = 13;
 const uint8_t NUM_LEDs = 60;
@@ -27,6 +27,7 @@ const uint8_t NUM_LEDs = 60;
 
 typedef enum {MANUAL, AUTOMATIC} Operation_Mode;
 typedef enum {NORMAL, ECO, GAMING} Function_Mode;
+typedef enum {RGB_LOOP, FADEINOUT, STROBE, CYLONBOUNCE, NEWKITT, TWINKLE} LED_EFFECTS;
 
 //Es declaren variables globals
 
@@ -34,10 +35,15 @@ uint16_t TempS0 = 0;
 uint16_t TempS1 = 0;
 Operation_Mode OPM = AUTOMATIC;
 Function_Mode FUM = NORMAL;
+Function_Mode lastFUM = NORMAL;
+LED_EFFECTS EF_LED = RGB_LOOP;
 long tiempo = millis();
 uint16_t t_muestreo = 1000;
 byte bright = 50;
 byte baza = 0;
+uint8_t PWM_value = 0;
+uint16_t lastT_Average = 0;
+uint16_t T_Average = 0;
 
 //Cream classe ventilador
 
@@ -117,46 +123,308 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  while(true){
 
-  getTemperature();
+    if(Serial.available() > 0){
+      OPM = Serial.read();
+      FUM = Serial.read();
+    }
+    
+    getTemperature();
+    lastT_Average = T_Average;
+    T_Average = ((TempS0 + TempS1) / 2);
 
-  uint8_t pines_Vent1 = Ventilador1.num_pines();
-  uint8_t pines_Vent2 = Ventilador2.num_pines();
-  uint8_t pines_Vent3 = Ventilador3.num_pines();
-  uint8_t pines_Vent4 = Ventilador4.num_pines();
-  uint8_t pines_Vent5 = Ventilador5.num_pines();
-
-
-  if(OPM == MANUAL){
-
-  }else if(OPM == AUTOMATIC){
-    switch (FUM){
-      case NORMAL:
-        //Tratament de LEDs
-        fadeToBlackBy(leds, NUM_LEDS, 2);
-        int pos = beatsin16(13, 0, NUM_LEDS - 1);
-        leds[pos] += CHSV(baza++, 255, 192);
-        FastLED.setBrightness(bright);
-        FastLED.show();
+    uint8_t pines_Vent1 = Ventilador1.num_pines();
+    uint8_t pines_Vent2 = Ventilador2.num_pines();
+    uint8_t pines_Vent3 = Ventilador3.num_pines();
+    uint8_t pines_Vent4 = Ventilador4.num_pines();
+    uint8_t pines_Vent5 = Ventilador5.num_pines();
 
 
-        break;
-      case ECO:
+    if(OPM == MANUAL){
+    //L'usuari decideix a quina velocitat vol que girin els ventiladors a través de la interfície d'usuari
+      switch(EF_LED){
+        case RGB_LOOP:
+          RGBLoop();
+          break;
+        case FADEINOUT:
+          FadeInOut(0xff, 0x00, 0x00); // red
+          FadeInOut(0xff, 0xff, 0xff); // white 
+          FadeInOut(0x00, 0x00, 0xff); // blue
+          break;
+        case STROBE:
+          Strobe(0xff, 0xff, 0xff, 10, 50, 1000);
+          break;
+        case CYLONBOUNCE:
+          CylonBounce(0xff, 0x00, 0x00, 4, 10, 50);
+          break;
+        case NEWKITT:
+          NewKITT(0xff, 0x00, 0x00, 8, 10, 50);
+          break;
+        case TWINKLE:
+          Twinkle(0xff, 0x00, 0x00, 10, 100, false);
+          break;
+        default:
 
-        break;
-      case GAMING:
+          break;
 
-        break;
-      default:
+      }
+    }else if(OPM == AUTOMATIC){
+      switch (FUM){
+        case NORMAL:
+          //Calculam el valor del senyal PWM
+          if(abs(T_Average - lastT_Average) >= 5 || lastFUM != FUM){
+            PWM_value = map(T_Average, 45, 85, 101, 255);
+          }
 
-        break;    
+          break;
+        case ECO:
+          //Calculam el valor del senyal PWM
+          if(abs(T_Average - lastT_Average) >= 5 || lastFUM != FUM){
+            PWM_value = map(T_Average, 55, 85, 101, 255);
+          }
+
+          break;
+        case GAMING:
+        if(abs(T_Average - lastT_Average) >= 5 || lastFUM != FUM){
+          PWM_value = map(T_Average, 35, 75, 101, 255);
+        }
+          break;
+        default:
+
+          break;
+
+      }
+        //Activam els ventiladors
+        if(pines_Vent1 == 3){
+          analogWrite(PIN_FAN1, PWM_value);
+        }else if(pines_Vent1 == 4){
+          analogWrite(PIN_PWM1, PWM_value);
+          digitalWrite(PIN_FAN1, HIGH);
+        }
+        analogWrite(PIN_FAN2, PWM_value);
+        analogWrite(PIN_FAN3, PWM_value);
+        analogWrite(PIN_FAN4, PWM_value);
+        analogWrite(PIN_FAN5, PWM_value);
     }
   }
-
 }
 
-        break;    
+// *************************
+// ** LEDEffect Functions **
+// *************************
+
+void RGBLoop(){
+  for(int j = 0; j < 3; j++ ) { 
+    // Fade IN
+    for(int k = 0; k < 256; k++) { 
+      switch(j) { 
+        case 0: setAll(k,0,0); break;
+        case 1: setAll(0,k,0); break;
+        case 2: setAll(0,0,k); break;
+      }
+      showStrip();
+      delay(3);
+    }
+    // Fade OUT
+    for(int k = 255; k >= 0; k--) { 
+      switch(j) { 
+        case 0: setAll(k,0,0); break;
+        case 1: setAll(0,k,0); break;
+        case 2: setAll(0,0,k); break;
+      }
+      showStrip();
+      delay(3);
     }
   }
+}
 
+void FadeInOut(byte red, byte green, byte blue){
+  float r, g, b;
+      
+  for(int k = 0; k < 256; k=k+1) { 
+    r = (k/256.0)*red;
+    g = (k/256.0)*green;
+    b = (k/256.0)*blue;
+    setAll(r,g,b);
+    showStrip();
+  }
+     
+  for(int k = 255; k >= 0; k=k-2) {
+    r = (k/256.0)*red;
+    g = (k/256.0)*green;
+    b = (k/256.0)*blue;
+    setAll(r,g,b);
+    showStrip();
+  }
+}
+
+void Strobe(byte red, byte green, byte blue, int StrobeCount, int FlashDelay, int EndPause){
+  for(int j = 0; j < StrobeCount; j++) {
+    setAll(red,green,blue);
+    showStrip();
+    delay(FlashDelay);
+    setAll(0,0,0);
+    showStrip();
+    delay(FlashDelay);
+  }
+ 
+ delay(EndPause);
+}
+
+void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+
+  for(int i = 0; i < NUM_LEDs-EyeSize-2; i++) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+
+  delay(ReturnDelay);
+
+  for(int i = NUM_LEDs-EyeSize-2; i > 0; i--) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  
+  delay(ReturnDelay);
+}
+
+void NewKITT(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+}
+
+// used by NewKITT
+void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i =((NUM_LEDs-EyeSize)/2); i>=0; i--) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDs-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDs-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDs-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+// used by NewKITT
+void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i<=((NUM_LEDs-EyeSize)/2); i++) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDs-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDs-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDs-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+// used by NewKITT
+void LeftToRight(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i < NUM_LEDs-EyeSize-2; i++) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+// used by NewKITT
+void RightToLeft(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = NUM_LEDs-EyeSize-2; i > 0; i--) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+
+void Twinkle(byte red, byte green, byte blue, int Count, int SpeedDelay, boolean OnlyOne) {
+  setAll(0,0,0);
+  
+  for (int i=0; i<Count; i++) {
+     setPixel(random(NUM_LEDs),red,green,blue);
+     showStrip();
+     delay(SpeedDelay);
+     if(OnlyOne) { 
+       setAll(0,0,0); 
+     }
+   }
+  
+  delay(SpeedDelay);
+}
+
+
+
+// ***************************************
+// ** FastLed Common Functions **
+// ***************************************
+
+// Aplicam els canvis realitzats als LEDs
+void showStrip() {
+   FastLED.show();
+}
+
+// Establim un color de LED
+void setPixel(int Pixel, byte red, byte green, byte blue) {
+   leds[Pixel].r = red;
+   leds[Pixel].g = green;
+   leds[Pixel].b = blue;
+}
+
+// Establim un color a tots els LEDs i l'aplicam (visible)
+void setAll(byte red, byte green, byte blue) {
+  for(int i = 0; i < NUM_LEDs; i++ ) {
+    setPixel(i, red, green, blue); 
+  }
+  showStrip();
 }
