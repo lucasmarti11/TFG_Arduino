@@ -1,0 +1,45 @@
+//Incluimos librerías
+
+#include <stdio.h>
+#include "Ventilador.h"
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <FastLED.h>
+#include <ArduinoJson.h>
+
+//Definimos constantes
+
+const uint8_t PIN_DTemp = A3;
+const uint8_t PIN_LEDs = A2;
+const uint8_t PIN_RPM2 = A1;
+const uint8_t PIN_RPM1 = A0;
+const uint8_t PIN_PWM1 = 3; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN1 = 5; //Freqüència PWM = 980Hz
+const uint8_t PIN_FAN2 = 6; //Freqüència PWM = 980Hz
+const uint8_t PIN_FAN3 = 8; 
+const uint8_t PIN_RPM3 = 9; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN4 = 10; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN5 = 11; //Freqüència PWM = 490Hz
+const uint8_t PIN_RPM4 = 12;
+const uint8_t PIN_RPM5 = 13;
+const uint8_t NUM_LEDs = 60;
+
+//Creamos objetos
+
+Keypad keypad;
+
+LCD lcd(
+  PIN_RS, PIN_RW, PIN_EN,
+  PIN_DB0, PIN_DB1, PIN_DB2, PIN_DB3,
+  PIN_DB4, PIN_DB5, PIN_DB6, PIN_DB7
+);
+
+void setup()
+{
+
+}
+
+void loop()
+{
+
+  while (true)
