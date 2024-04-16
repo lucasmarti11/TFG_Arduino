@@ -15,6 +15,7 @@ Ventilador::Ventilador(FanType_t TipoVent, uint8_t pin_rpm, uint8_t pin_fan, uin
   tiempo_inicial = 0;
   tiempo_final = 0;
   tiempo_total = 0;
+  ultima_medicionRPM = 0;
   counting  = false;
 
   pinMode(pin_revoluciones, INPUT);
@@ -25,7 +26,8 @@ Ventilador::Ventilador(FanType_t TipoVent, uint8_t pin_rpm, uint8_t pin_fan, uin
   
 }
 
-uint16_t medirRPM(){
+uint16_t Ventilador::medirRPM(){
+  uint16_t revoluciones = 0;
   if(digitalRead(pin_revolciones) == LOW && counting == true){
     tiempo_final = micros();
     counting = false;
@@ -38,12 +40,12 @@ uint16_t medirRPM(){
     
   }
   if(tiempo_total != 0){
-    tiempo_total
+    revoluciones = (tiempo_total / (2 * 60));
   }
-
+  return revoluciones;
 }
 
-void SetFan(Operation_Mode_t Oper_Mode, Function_Mode_t Func_Mode, uint8_t Temperature, uint8_t last_Temperature, uint8_t percent = 0){
+void Ventilador::SetFan(Operation_Mode_t Oper_Mode, Function_Mode_t Func_Mode, uint8_t Temperature, uint8_t last_Temperature, uint8_t percent = 0){
   if(Oper_Mode == AUTOMATIC){
     if(abs(Temperature - last_Temperature >= 5){
       if(Func_Mode == NORMAL){
@@ -64,5 +66,4 @@ void SetFan(Operation_Mode_t Oper_Mode, Function_Mode_t Func_Mode, uint8_t Tempe
     analogWrite(pin_pcFan, PWM_value);
   }
 }
-
 
