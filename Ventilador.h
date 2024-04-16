@@ -32,6 +32,7 @@ class Ventilador {
     uint16_t tiempo_inicial;
     uint16_t tiempo_final;
     uint16_t tiempo_total;
+    uint16_t ultima_medicionRPM;
     bool counting;
 };
 
