@@ -47,7 +47,7 @@ uint16_t Ventilador::medirRPM(){
 
 void Ventilador::SetFan(Operation_Mode_t Oper_Mode, Function_Mode_t Func_Mode, uint8_t Temperature, uint8_t last_Temperature, uint8_t percent = 0){
   if(Oper_Mode == AUTOMATIC){
-    if(abs(Temperature - last_Temperature >= 5){
+    if(abs(Temperature - last_Temperature) >= 5){
       if(Func_Mode == NORMAL){
         PWM_value = map(Temperature, 45, 85, 101, 255); //Com a valor minim de PWM establim 101 ja que sera el valor minim el qual fara que el venmtilador giri minimament
       }else if(Func_Mode == ECO){
