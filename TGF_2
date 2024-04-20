@@ -1,7 +1,7 @@
 //Incluimos librerías
 
 #include <stdio.h>
-#include "Ventilador.h"
+#include "Fan.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <FastLED.h>
@@ -22,24 +22,95 @@ const uint8_t PIN_FAN4 = 10; //Freqüència PWM = 490Hz
 const uint8_t PIN_FAN5 = 11; //Freqüència PWM = 490Hz
 const uint8_t PIN_RPM4 = 12;
 const uint8_t PIN_RPM5 = 13;
+
 const uint8_t NUM_LEDs = 60;
 
+FanType_t type_fan1 = FourPins_Soft;
+FanType_t type_fan2 = FourPins_Hard;
+FanType_t type_fan3 = FourPins_Hard;
+FanType_t type_fan4 = ThreePins;
+FanType_t type_fan5 = ThreePins;
+
+Operation_Mode_t mode_fan = NORMAL;
+
+uint16_t rpm_fan1 = 0;
+uint16_t rpm_fan2 = 0;
+uint16_t rpm_fan3 = 0;
+uint16_t rpm_fan4 = 0;
+uint16_t rpm_fan5 = 0;
+
+float temp_sensor1 = 0;
+float temp_sensor2 = 0;
+float temp_sensor3 = 0;
+
+char json[300];
 //Creamos objetos
 
-Keypad keypad;
+Fan Fan1(type_fan1, PIN_RPM1, PIN_FAN1, PIN_PWM1);
+Fan Fan2(type_fan2, PIN_RPM2, PIN_FAN2);
+Fan Fan3(type_fan3, PIN_RPM3, PIN_FAN3);
+Fan Fan4(type_fan4, PIN_RPM4, PIN_FAN4);
+Fan Fan5(type_fan5, PIN_RPM5, PIN_FAN5);
 
-LCD lcd(
-  PIN_RS, PIN_RW, PIN_EN,
-  PIN_DB0, PIN_DB1, PIN_DB2, PIN_DB3,
-  PIN_DB4, PIN_DB5, PIN_DB6, PIN_DB7
-);
+OneWire oneWireObj(PIN_DTemp);
+DallasTemperature sensorT(&oneWireObj);
 
 void setup()
 {
+  Serial.begin(115200);
 
+  Fan1.begin();
+  Fan2.begin();
+  Fan3.begin();
+  Fan4.begin();
+  Fan5.begin();
+
+  sensorT.begin();
 }
 
 void loop()
 {
 
   while (true)
+  {
+    sensorT.requestTemperatures();
+  }
+
+}
+
+void sendData(){
+  StaticJsonDocument<300> doc;
+
+  doc["Temp1"] = temp_sensor1;
+  doc["Temp2"] = temp_sensor2;
+  doc["Temp3"] = temp_sensor3;
+  doc["rpm1"] = rpm_fan1;
+  doc["rpm2"] = rpm_fan2;
+  doc["rpm3"] = rpm_fan3;  
+  doc["rpm4"] = rpm_fan4;
+  doc["rpm5"] = rpm_fan5;
+
+  serializeJson(doc, Serial);
+}
+
+void receiveData(){
+  StaticJsonDocument<300> doc;
+
+  DeserializationError error = deserializeJson(doc, json);
+
+  // Test if parsing succeeds.
+  if (error) {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.f_str());
+    return;
+  }
+
+  mode_fan = doc["mode"];
+  rpm_fan1 = doc["rpm1"];
+  rpm_fan2 = doc["rpm2"];
+  rpm_fan3 = doc["rpm3"];
+  rpm_fan4 = doc["rpm4"];
+  rpm_fan5 = doc["rpm5"];
+
+}
+
