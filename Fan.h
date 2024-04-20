@@ -1,0 +1,46 @@
+#ifndef FAN_H
+#define FAN_H
+
+#include <Arduino.h>
+#include <stdint.h>
+
+typedef enum {ThreePins, FourPins_Soft, FourPins_Hard} FanType_t;
+typedef enum {SILENT, NORMAL, GAMING, MANUAL} Operation_Mode_t;  // Enlloc de ECO té més sentit SILENT
+
+class Fan {
+  public:
+    // Initializations
+
+    Fan(FanType_t type, uint8_t pin_rpm, uint8_t pin_fan, uint8_t pin_pwm = 0);
+
+    // Les inicialitzacions dels pins s'han de fer dins el setup(), poden donar problemes si es fan al constructor ja que s'executarà abans del setup()
+    void begin();
+
+    void measureRPM();
+    
+    void setFanSpeed(Operation_Mode_t oper_mode, uint8_t temperature, uint8_t percent = 0);
+    
+    uint16_t getRPM()
+    {
+      return rpm_;
+    }
+
+  private:
+    // afegeixo _ al final a les variables de classe. Es una pràctica habitual perquè al codi quedi més clar quines són variables de classe i quines no
+    // també s'eviten problemes quan els argument s'anomenen igual, com per exemple al constructor
+    FanType_t type_;
+    uint8_t   pin_rpm_;
+    uint8_t   pin_fan_;
+    uint8_t   pin_pwm_;
+
+    uint16_t  rpm_;
+
+    int last_pwm_value;
+
+    unsigned long start_time_; // la funció micros retorna aquest tipus de dada no basta un uint16_t
+    bool     counting_;
+
+    uint8_t calculateFanSpeed(Operation_Mode_t oper_mode, uint8_t temperature, uint8_t percent = 0);
+};
+
+#endif
