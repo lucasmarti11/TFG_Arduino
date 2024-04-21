@@ -39,11 +39,18 @@ uint16_t rpm_fan3 = 0;
 uint16_t rpm_fan4 = 0;
 uint16_t rpm_fan5 = 0;
 
+uint8_t rpm_fan1_percent = 0; //Per quan es rebi per part de l'interfície gràfica
+uint8_t rpm_fan2_percent = 0;
+uint8_t rpm_fan3_percent = 0;
+uint8_t rpm_fan4_percent = 0;
+uint8_t rpm_fan5_percent = 0;
+
 float temp_sensor1 = 0;
 float temp_sensor2 = 0;
 float temp_sensor3 = 0;
 
-char json[300];
+char data[200];
+int data_index = 0;
 //Creamos objetos
 
 Fan Fan1(type_fan1, PIN_RPM1, PIN_FAN1, PIN_PWM1);
@@ -58,6 +65,7 @@ DallasTemperature sensorT(&oneWireObj);
 void setup()
 {
   Serial.begin(115200);
+  while (!Serial) continue;
 
   Fan1.begin();
   Fan2.begin();
@@ -74,43 +82,86 @@ void loop()
   while (true)
   {
     sensorT.requestTemperatures();
+    sendData();
+
+    if(Serial.available() > 0){
+      while(Serial.available() > 0){
+        char character = Serial.read();
+        if (character != '\n'){
+          data[data_index] = character;
+          data_index ++;
+        }else if(!Serial.available()){
+          Serial.print("El mensaje recibido es: ");
+          Serial.println(data);
+          receiveData(data, data_index);
+          data_index = 0;
+        }
+      }
+    }
   }
 
 }
 
 void sendData(){
-  StaticJsonDocument<300> doc;
+  StaticJsonDocument<200> doc1;
+  
+  doc1["Temp1"] = temp_sensor1;
+  doc1["Temp2"] = temp_sensor2;
+  doc1["Temp3"] = temp_sensor3;
+  doc1["rpm1"] = rpm_fan1;
+  doc1["rpm2"] = rpm_fan2;
+  doc1["rpm3"] = rpm_fan3;  
+  doc1["rpm4"] = rpm_fan4;
+  doc1["rpm5"] = rpm_fan5;
 
-  doc["Temp1"] = temp_sensor1;
-  doc["Temp2"] = temp_sensor2;
-  doc["Temp3"] = temp_sensor3;
-  doc["rpm1"] = rpm_fan1;
-  doc["rpm2"] = rpm_fan2;
-  doc["rpm3"] = rpm_fan3;  
-  doc["rpm4"] = rpm_fan4;
-  doc["rpm5"] = rpm_fan5;
+  serializeJson(doc1, Serial);
 
-  serializeJson(doc, Serial);
+  Serial.println();
 }
 
-void receiveData(){
-  StaticJsonDocument<300> doc;
+void receiveData(char* data1, int index){
 
-  DeserializationError error = deserializeJson(doc, json);
+  StaticJsonDocument<300> doc2;
 
-  // Test if parsing succeeds.
+  //char json2[] = "{\"mode\":2,\"rpm1\":1400,\"rpm2\":1300,\"rpm3\":1400,\"rpm4\":1600,\"rpm5\":1500}"; Formato que no funciona
+  //char json3[] = {"mode":2,"rpm1":1400,"rpm2":1300,"rpm3":1400,"rpm4":1600,"rpm5":1500}; Formato que funciona para recibir
+  
+  char json[index + 1];
+
+  
+  for(int i = 0; i < index; i++){
+    json[i] = data1[i];
+  }
+  for (int j = 0; j < index; j++) {
+    if (json[j] == '\0') {
+      // Si encontramos un carácter nulo, lo establecemos y salimos del ciclo
+      json[j] = '\0';
+      break;
+    }
+  }
+
+  DeserializationError error = deserializeJson(doc2, json);
+
   if (error) {
     Serial.print(F("deserializeJson() failed: "));
     Serial.println(error.f_str());
     return;
   }
 
-  mode_fan = doc["mode"];
-  rpm_fan1 = doc["rpm1"];
-  rpm_fan2 = doc["rpm2"];
-  rpm_fan3 = doc["rpm3"];
-  rpm_fan4 = doc["rpm4"];
-  rpm_fan5 = doc["rpm5"];
+  mode_fan = doc2["mode"];
+  rpm_fan1_percent = doc2["rpm1"];
+  rpm_fan2_percent = doc2["rpm2"];
+  rpm_fan3_percent = doc2["rpm3"];
+  rpm_fan4_percent = doc2["rpm4"];
+  rpm_fan5_percent = doc2["rpm5"];
 
+  // Print values.
+  Serial.println("Received Data: ");
+  Serial.println(mode_fan);
+  Serial.println(rpm_fan1);
+  Serial.println(rpm_fan2);
+  Serial.println(rpm_fan3);
+  Serial.println(rpm_fan4);
+  Serial.println(rpm_fan5);
+  delay(2000);
 }
-
