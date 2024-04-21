@@ -24,56 +24,65 @@ void setup() {
 
 void loop() {
 
-  //sendData();
+  sendData();
   
   while(Serial.available() > 0){
     char character = Serial.read();
-    if (character != '}')
+    if (character != '\n')
     {
       data[data_index] = character;
       data_index ++;
-    }else{
-      data[data_index] = character;
-      data_index ++;
+    }else if(!Serial.available()){
       Serial.print("El mensaje recibido es: ");
       Serial.println(data);
       receiveData(data, data_index);
+      data_index = 0;
     }
   }
 }
 
 void sendData(){
-  StaticJsonDocument<200> doc;
+  StaticJsonDocument<200> doc1;
   
-  doc["Temp1"] = temp_sensor1;
-  doc["Temp2"] = temp_sensor2;
-  doc["Temp3"] = temp_sensor3;
-  doc["rpm1"] = rpm_fan1;
-  doc["rpm2"] = rpm_fan2;
-  doc["rpm3"] = rpm_fan3;  
-  doc["rpm4"] = rpm_fan4;
-  doc["rpm5"] = rpm_fan5;
+  doc1["Temp1"] = temp_sensor1;
+  doc1["Temp2"] = temp_sensor2;
+  doc1["Temp3"] = temp_sensor3;
+  doc1["rpm1"] = rpm_fan1;
+  doc1["rpm2"] = rpm_fan2;
+  doc1["rpm3"] = rpm_fan3;  
+  doc1["rpm4"] = rpm_fan4;
+  doc1["rpm5"] = rpm_fan5;
 
-  serializeJson(doc, Serial);
+  serializeJson(doc1, Serial);
 
   Serial.println();
 }
 
 void receiveData(char* data1, int index){
 
-   StaticJsonDocument<200> doc;
+   StaticJsonDocument<300> doc2;
 
-  //char json[] = "{\"mode\":2,\"rpm1\":1400,\"rpm2\":1300,\"rpm3\":1400,\"rpm4\":1600,\"rpm5\":1500}";
-
+  //char json2[] = "{\"mode\":2,\"rpm1\":1400,\"rpm2\":1300,\"rpm3\":1400,\"rpm4\":1600,\"rpm5\":1500}"; Formato que no funciona
+  //char json3[] = {"mode":2,"rpm1":1400,"rpm2":1300,"rpm3":1400,"rpm4":1600,"rpm5":1500}; Formato que funciona para recibir
   char json[index + 1];
 
   
   for(int i = 0; i < index; i++){
     json[i] = data1[i];
   }
-  json[index] = '\0'; 
+  for (int j = 0; j < index; j++) {
+    if (json[j] == '\0') {
+      // Si encontramos un carácter nulo, lo establecemos y salimos del ciclo
+      json[j] = '\0';
+      break;
+    }
+  }
 
-  DeserializationError error = deserializeJson(doc, data1);
+  /*Serial.print("El mensaje JSON es    : ");
+  Serial.println(json2);*/
+
+
+  DeserializationError error = deserializeJson(doc2, json);
 
   if (error) {
     Serial.print(F("deserializeJson() failed: "));
@@ -81,12 +90,12 @@ void receiveData(char* data1, int index){
     return;
   }
 
-  mode_fan = doc["mode"];
-  rpm_fan1 = doc["rpm1"];
-  rpm_fan2 = doc["rpm2"];
-  rpm_fan3 = doc["rpm3"];
-  rpm_fan4 = doc["rpm4"];
-  rpm_fan5 = doc["rpm5"];
+  mode_fan = doc2["mode"];
+  rpm_fan1 = doc2["rpm1"];
+  rpm_fan2 = doc2["rpm2"];
+  rpm_fan3 = doc2["rpm3"];
+  rpm_fan4 = doc2["rpm4"];
+  rpm_fan5 = doc2["rpm5"];
 
   // Print values.
   Serial.println("Received Data: ");
