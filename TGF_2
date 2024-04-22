@@ -74,33 +74,53 @@ void setup()
   Fan5.begin();
 
   sensorT.begin();
+  sensorT.setResolution(11);
 }
 
-void loop()
-{
+void loop(){
 
-  while (true)
-  {
+  /*if(!Serial.available()){
     sensorT.requestTemperatures();
-    sendData();
+    temp_sensor1 = sensorT.getTempCByIndex(0);
+    temp_sensor2 = sensorT.getTempCByIndex(1);
+    temp_sensor3 = sensorT.getTempCByIndex(2);
+    Usar la funció getTempC(uint8_t adressa)
+  }*/ //No ho puc descomentar perque si no no hem fa bé la lectura de les dades que li entren. Degut a que no detecta correctament el Serial.available o algo així pero no ho acab de veure. Segons la recerca que he fet es deu a que quan es crida el request fins que no es fa la transformació queda bloquejat per tant si no hi ha sondes connectades, no pot fer la conversió i per tant queda bloquejat
 
-    if(Serial.available() > 0){
-      while(Serial.available() > 0){
-        char character = Serial.read();
-        if (character != '\n'){
-          data[data_index] = character;
-          data_index ++;
-        }else if(!Serial.available()){
-          Serial.print("El mensaje recibido es: ");
-          Serial.println(data);
-          receiveData(data, data_index);
-          data_index = 0;
-        }
-      }
+  Fan1.measureRPM();
+  Fan2.measureRPM();
+  Fan3.measureRPM();
+  Fan4.measureRPM();
+  Fan5.measureRPM();
+
+  rpm_fan1 = Fan1.getRPM();
+  rpm_fan2 = Fan2.getRPM();
+  rpm_fan3 = Fan3.getRPM();
+  rpm_fan4 = Fan4.getRPM();
+  rpm_fan5 = Fan5.getRPM();
+
+  Fan1.setFanSpeed(mode_fan, temp_sensor1, rpm_fan1_percent);
+  Fan2.setFanSpeed(mode_fan, temp_sensor2, rpm_fan2_percent);
+  Fan3.setFanSpeed(mode_fan, temp_sensor2, rpm_fan3_percent);
+  Fan4.setFanSpeed(mode_fan, temp_sensor3, rpm_fan4_percent);
+  Fan5.setFanSpeed(mode_fan, temp_sensor3, rpm_fan5_percent);
+
+  sendData();
+
+  while(Serial.available() > 0){
+    char character = Serial.read();
+    if (character != '\n'){
+      data[data_index] = character;
+      data_index ++;
+    }else{
+      Serial.print("El mensaje recibido es: ");
+      Serial.println(data);
+      receiveData(data, data_index);
+      data_index = 0;
     }
   }
-
 }
+
 
 void sendData(){
   StaticJsonDocument<200> doc1;
