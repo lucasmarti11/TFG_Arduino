@@ -46,5 +46,5 @@ void printTemperature(DeviceAddress address) {
   float tempC = sensorT.getTempC(address);
   Serial.print(tempC);
   Serial.print(" \xC2\xB0"); // shows degree symbol
-  Serial.print("C  |  ");
+  Serial.print("C");
 }
