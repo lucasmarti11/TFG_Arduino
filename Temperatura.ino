@@ -32,6 +32,7 @@ void setup(void) {
   // Loop through each device, print out address
   for(int i=0;i<numberOfDevices; i++) {
     // Search the wire for address
+    // La función getAddress devuelve un booleano que vale true en caso de que se haya encontrado un sensor en ese indice. Guaradara en tempDeviceAddress la dirección de dicho sensor
     if(sensors.getAddress(tempDeviceAddress, i)) {
       Serial.print("Found device ");
       Serial.print(i, DEC);
