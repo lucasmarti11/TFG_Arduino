@@ -1,4 +1,3 @@
-/* Multiple DS18B20 1-Wire digital temperature sensors with Arduino example code. More info: https://www.makerguides.com */
 //ESTE CÓDIGO ES PARA LA LECTURA DE DIRECCIONES DE LOS SENSORES
 
 // Include the required Arduino libraries:
