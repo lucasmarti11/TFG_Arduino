@@ -1,6 +1,3 @@
-/* Read multiple DS18B20 1-Wire digital temperature sensors by address. 
-   More info: https://www.makerguides.com */
-
 // Include the required Arduino libraries:
 #include "OneWire.h"
 #include "DallasTemperature.h"
