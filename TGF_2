@@ -49,7 +49,7 @@ float temp_sensor1 = 0;
 float temp_sensor2 = 0;
 float temp_sensor3 = 0;
 
-char data[200];
+char data[300];
 int data_index = 0;
 //Creamos objetos
 
@@ -87,7 +87,7 @@ void loop(){
     Usar la funció getTempC(uint8_t adressa)
   }*/ //No ho puc descomentar perque si no no hem fa bé la lectura de les dades que li entren. Degut a que no detecta correctament el Serial.available o algo així pero no ho acab de veure. Segons la recerca que he fet es deu a que quan es crida el request fins que no es fa la transformació queda bloquejat per tant si no hi ha sondes connectades, no pot fer la conversió i per tant queda bloquejat
 
-  Fan1.measureRPM();
+  /*Fan1.measureRPM();
   Fan2.measureRPM();
   Fan3.measureRPM();
   Fan4.measureRPM();
@@ -103,7 +103,7 @@ void loop(){
   Fan2.setFanSpeed(mode_fan, temp_sensor2, rpm_fan2_percent);
   Fan3.setFanSpeed(mode_fan, temp_sensor2, rpm_fan3_percent);
   Fan4.setFanSpeed(mode_fan, temp_sensor3, rpm_fan4_percent);
-  Fan5.setFanSpeed(mode_fan, temp_sensor3, rpm_fan5_percent);
+  Fan5.setFanSpeed(mode_fan, temp_sensor3, rpm_fan5_percent);*/
 
   sendData();
 
@@ -145,7 +145,8 @@ void receiveData(char* data1, int index){
 
   //char json2[] = "{\"mode\":2,\"rpm1\":1400,\"rpm2\":1300,\"rpm3\":1400,\"rpm4\":1600,\"rpm5\":1500}"; Formato que no funciona
   //char json3[] = {"mode":2,"rpm1":1400,"rpm2":1300,"rpm3":1400,"rpm4":1600,"rpm5":1500}; Formato que funciona para recibir
-  
+  //char json3[] = {"mode":2,"pc_rpm1":14,"pc_rpm2":13,"pc_rpm3":64,"pc_rpm4":57,"pc_rpm5":96}; Formato que funciona para recibir
+
   char json[index + 1];
 
   
@@ -169,19 +170,19 @@ void receiveData(char* data1, int index){
   }
 
   mode_fan = doc2["mode"];
-  rpm_fan1_percent = doc2["rpm1"];
-  rpm_fan2_percent = doc2["rpm2"];
-  rpm_fan3_percent = doc2["rpm3"];
-  rpm_fan4_percent = doc2["rpm4"];
-  rpm_fan5_percent = doc2["rpm5"];
+  rpm_fan1_percent = doc2["pc_rpm1"];
+  rpm_fan2_percent = doc2["pc_rpm2"];
+  rpm_fan3_percent = doc2["pc_rpm3"];
+  rpm_fan4_percent = doc2["pc_rpm4"];
+  rpm_fan5_percent = doc2["pc_rpm5"];
 
   // Print values.
   Serial.println("Received Data: ");
   Serial.println(mode_fan);
-  Serial.println(rpm_fan1);
-  Serial.println(rpm_fan2);
-  Serial.println(rpm_fan3);
-  Serial.println(rpm_fan4);
-  Serial.println(rpm_fan5);
+  Serial.println(rpm_fan1_percent);
+  Serial.println(rpm_fan2_percent);
+  Serial.println(rpm_fan3_percent);
+  Serial.println(rpm_fan4_percent);
+  Serial.println(rpm_fan5_percent);
   delay(2000);
 }
