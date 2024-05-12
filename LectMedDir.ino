@@ -1,3 +1,6 @@
+/* Read multiple DS18B20 1-Wire digital temperature sensors by address. 
+   More info: https://www.makerguides.com */
+
 // Include the required Arduino libraries:
 #include "OneWire.h"
 #include "DallasTemperature.h"
@@ -12,9 +15,18 @@ OneWire oneWire(PIN_DTemp);
 DallasTemperature sensorT(&oneWire);
 
 // Addresses of DS18B20 sensors connected to the 1-Wire bus
-byte sensor1[8] = {0x28, 0x18, 0xB4, 0x49, 0x0C, 0x00, 0x00, 0x7C}; //Aquí deberemos pones lad irecciones obtenidas con el otro programa
-byte sensor2[8] = {0x28, 0xCC, 0x19, 0x49, 0x0C, 0x00, 0x00, 0xBB};
-byte sensor3[8] = {0x28, 0x19, 0xEF, 0x48, 0x0C, 0x00, 0x00, 0x21};
+
+/*Direcciones de nuestros sensores:
+
+14:08:23.842 -> Sensor 1 : 0x28, 0x61, 0x64, 0x09, 0x54, 0x3B, 0xC8, 0x94
+14:08:23.875 -> Sensor 2 : 0x28, 0xFF, 0x64, 0x1D, 0xF2, 0x7C, 0xDD, 0x70
+14:08:23.940 -> Sensor 3 : 0x28, 0xFF, 0x64, 0x1D, 0xFD, 0x97, 0x70, 0x2B
+
+*/
+
+byte sensor1[8] = {0x28, 0x61, 0x64, 0x09, 0x54, 0x3B, 0xC8, 0x94}; //Aquí deberemos pones lad irecciones obtenidas con el otro programa
+byte sensor2[8] = {0x28, 0xFF, 0x64, 0x1D, 0xF2, 0x7C, 0xDD, 0x70};
+byte sensor3[8] = {0x28, 0xFF, 0x64, 0x1D, 0xFD, 0x97, 0x70, 0x2B};
 
 void setup() {
   // Begin serial communication at a baud rate of 9600:
@@ -43,5 +55,5 @@ void printTemperature(DeviceAddress address) {
   float tempC = sensorT.getTempC(address);
   Serial.print(tempC);
   Serial.print(" \xC2\xB0"); // shows degree symbol
-  Serial.print("C");
+  Serial.print("C ");
 }
