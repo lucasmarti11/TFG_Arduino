@@ -1,0 +1,1148 @@
+[
+    {
+        "id": "2c2a0c084ad3c41e",
+        "type": "tab",
+        "label": "Flujo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "105128141645bf6f",
+        "type": "serial in",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Serial IN",
+        "serial": "7a18439c0f724b2a",
+        "x": 540,
+        "y": 580,
+        "wires": [
+            [
+                "346d87152cb8800c",
+                "1d17b6cc0b1b5540"
+            ]
+        ]
+    },
+    {
+        "id": "346d87152cb8800c",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "JSON_String",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "1d17b6cc0b1b5540",
+        "type": "json",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 790,
+        "y": 700,
+        "wires": [
+            [
+                "db8f3366d974be2e",
+                "ed4f00a57fc51b96",
+                "392170b4f6f1a118",
+                "1b9ac293d39c6ef9",
+                "66359f0961a58655",
+                "9d6ab496fc70ee0d",
+                "8136358adab0a793",
+                "da1498fcc8cc7582",
+                "22640c64a9766e4b"
+            ]
+        ]
+    },
+    {
+        "id": "db8f3366d974be2e",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "JavaScript Object",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "ed4f00a57fc51b96",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.Temp1",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 800,
+        "wires": [
+            [
+                "e74da6cb98f84867",
+                "c708a78642e3c645"
+            ]
+        ]
+    },
+    {
+        "id": "e74da6cb98f84867",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Temp1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "392170b4f6f1a118",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.Temp2",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 880,
+        "wires": [
+            [
+                "75f1eedc9f7194b9",
+                "8c77d1e8ddb8574a"
+            ]
+        ]
+    },
+    {
+        "id": "75f1eedc9f7194b9",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Temp2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "1b9ac293d39c6ef9",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.Temp3",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 960,
+        "wires": [
+            [
+                "f090ec6886fd4652",
+                "80b43a010a13ee26"
+            ]
+        ]
+    },
+    {
+        "id": "f090ec6886fd4652",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Temp3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "66359f0961a58655",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rpm1",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 1040,
+        "wires": [
+            [
+                "6a38261555b6642a",
+                "23acec17d3618138"
+            ]
+        ]
+    },
+    {
+        "id": "6a38261555b6642a",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "9d6ab496fc70ee0d",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rpm2",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 1120,
+        "wires": [
+            [
+                "22d337252c915a5a",
+                "5bc429782754cb9c"
+            ]
+        ]
+    },
+    {
+        "id": "22d337252c915a5a",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "8136358adab0a793",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rpm3",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 1200,
+        "wires": [
+            [
+                "e5956ed681e18074",
+                "5050c7f2f3dd5d8c"
+            ]
+        ]
+    },
+    {
+        "id": "e5956ed681e18074",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "da1498fcc8cc7582",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rpm4",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 1280,
+        "wires": [
+            [
+                "0c9cde516cdd8f98",
+                "dfa1f3562aa66ff4"
+            ]
+        ]
+    },
+    {
+        "id": "0c9cde516cdd8f98",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "22640c64a9766e4b",
+        "type": "change",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rpm5",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 980,
+        "y": 1360,
+        "wires": [
+            [
+                "10ffdc339792d9ac",
+                "3dc674c82890c52a"
+            ]
+        ]
+    },
+    {
+        "id": "10ffdc339792d9ac",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "23acec17d3618138",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm1",
+        "group": "1301eee028a47c91",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "RPM1",
+        "label": "rpm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2500",
+        "colors": [
+            "#0082e6",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "5bc429782754cb9c",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm2",
+        "group": "1301eee028a47c91",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "RPM2",
+        "label": "rpm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2500",
+        "colors": [
+            "#0082e6",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "5050c7f2f3dd5d8c",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm3",
+        "group": "1301eee028a47c91",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "RPM3",
+        "label": "rpm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2500",
+        "colors": [
+            "#0082e6",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "dfa1f3562aa66ff4",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm4",
+        "group": "1301eee028a47c91",
+        "order": 4,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "RPM4",
+        "label": "rpm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2500",
+        "colors": [
+            "#0082e6",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "3dc674c82890c52a",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "rpm5",
+        "group": "1301eee028a47c91",
+        "order": 5,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "RPM5",
+        "label": "rpm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2500",
+        "colors": [
+            "#0082e6",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "80b43a010a13ee26",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Temp3",
+        "group": "4f18e0d3bf6d0fb2",
+        "order": 3,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": " Temperatura Sensor 3",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#009eb3",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "45",
+        "seg2": "70",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "8c77d1e8ddb8574a",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Temp2",
+        "group": "4f18e0d3bf6d0fb2",
+        "order": 2,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": " Temperatura Sensor 2",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#009eb3",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "45",
+        "seg2": "70",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "c708a78642e3c645",
+        "type": "ui_gauge",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Temp1",
+        "group": "4f18e0d3bf6d0fb2",
+        "order": 1,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": " Temperatura Sensor 1",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#009eb3",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "45",
+        "seg2": "70",
+        "diff": false,
+        "className": "",
+        "x": 1350,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "87f73dfc5f7d2dda",
+        "type": "ui_dropdown",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Mode_Dropdown",
+        "label": "Operation Mode List",
+        "tooltip": "Select the operation mode for you fans",
+        "place": "Select Operation Mode Option",
+        "group": "217574afafff9f4a",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "multiple": false,
+        "options": [
+            {
+                "label": "SILENT",
+                "value": 0,
+                "type": "num"
+            },
+            {
+                "label": "NORMAL",
+                "value": 1,
+                "type": "num"
+            },
+            {
+                "label": "GAMING",
+                "value": 2,
+                "type": "num"
+            },
+            {
+                "label": "MANUAL",
+                "value": 3,
+                "type": "num"
+            }
+        ],
+        "payload": "",
+        "topic": "mode",
+        "topicType": "msg",
+        "className": "",
+        "x": 650,
+        "y": 1580,
+        "wires": [
+            [
+                "de29a2f818aad6f4"
+            ]
+        ]
+    },
+    {
+        "id": "3b29150bc070ed28",
+        "type": "ui_slider",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Percent RPM2",
+        "label": "Slider RPM2",
+        "tooltip": "",
+        "group": "78141955d389409a",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "pc_rpm2",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 640,
+        "y": 1680,
+        "wires": [
+            [
+                "bfbbfa338920ed22"
+            ]
+        ]
+    },
+    {
+        "id": "e55cc0a1c9a0a68e",
+        "type": "ui_slider",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Percent RPM3",
+        "label": "Slider RPM3",
+        "tooltip": "",
+        "group": "78141955d389409a",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "pc_rpm3",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 640,
+        "y": 1720,
+        "wires": [
+            [
+                "44d8e1beb9700f62"
+            ]
+        ]
+    },
+    {
+        "id": "f80868f8e1b428c1",
+        "type": "ui_slider",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Percent RPM4",
+        "label": "Slider RPM4",
+        "tooltip": "",
+        "group": "78141955d389409a",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "pc_rpm4",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 640,
+        "y": 1760,
+        "wires": [
+            [
+                "f2bbae09d3b7324c"
+            ]
+        ]
+    },
+    {
+        "id": "0b2a8743080e591e",
+        "type": "ui_slider",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Percent RPM5",
+        "label": "Slider RPM5",
+        "tooltip": "",
+        "group": "78141955d389409a",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "pc_rpm5",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 640,
+        "y": 1800,
+        "wires": [
+            [
+                "aaf04a893769efe2"
+            ]
+        ]
+    },
+    {
+        "id": "8e7f4cd7d3718a78",
+        "type": "ui_slider",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Percent RPM1",
+        "label": "Slider RPM1",
+        "tooltip": "",
+        "group": "78141955d389409a",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "pc_rpm1",
+        "topicType": "msg",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 640,
+        "y": 1640,
+        "wires": [
+            [
+                "21f96865224a0e4d"
+            ]
+        ]
+    },
+    {
+        "id": "dc195c16e9466a65",
+        "type": "json",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Parse Object",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 1570,
+        "y": 1620,
+        "wires": [
+            [
+                "50c2af7c35a70e3c",
+                "bf48de0ce8ce4aad"
+            ]
+        ]
+    },
+    {
+        "id": "50c2af7c35a70e3c",
+        "type": "serial out",
+        "z": "2c2a0c084ad3c41e",
+        "name": "",
+        "serial": "7a18439c0f724b2a",
+        "x": 1800,
+        "y": 1620,
+        "wires": []
+    },
+    {
+        "id": "140b68fc30f15d8a",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "debug 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1460,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "bf48de0ce8ce4aad",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1820,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "02c613ceb6f62731",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Save Number 2",
+        "func": "\ncontext.set(msg.topic,msg.payload);\n\nmsg.payload = {\n\n    \"mode\": context.get(\"mode\"),\n\n    \"pc_rpm1\": context.get(\"pc_rpm1\"),\n\n    \"pc_rpm2\": context.get(\"pc_rpm2\"),\n\n    \"pc_rpm3\": context.get(\"pc_rpm3\"),\n\n    \"pc_rpm4\": context.get(\"pc_rpm4\"),\n\n    \"pc_rpm5\": context.get(\"pc_rpm5\")\n\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// El código añadido aquí se ejecutará una vez\n// cuando el nodo es iniciado.\n\ncontext.set(\"mode\", 0);\n\ncontext.set(\"pc_rpm1\", 0);\n\ncontext.set(\"pc_rpm2\", 0);\n\ncontext.set(\"pc_rpm3\", 0);\n\ncontext.set(\"pc_rpm4\", 0);\n\ncontext.set(\"pc_rpm5\", 0);",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 1620,
+        "wires": [
+            [
+                "dc195c16e9466a65",
+                "140b68fc30f15d8a"
+            ]
+        ]
+    },
+    {
+        "id": "067e5ed69af62289",
+        "type": "debug",
+        "z": "2c2a0c084ad3c41e",
+        "name": "debug 7",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1180,
+        "y": 1720,
+        "wires": []
+    },
+    {
+        "id": "de29a2f818aad6f4",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "add topic mode",
+        "func": "var enter_message = msg.payload;\n\nvar tema = \"mode\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 1580,
+        "wires": [
+            [
+                "067e5ed69af62289",
+                "02c613ceb6f62731"
+            ]
+        ]
+    },
+    {
+        "id": "21f96865224a0e4d",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "add topic pc_rpm1",
+        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm1\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 1640,
+        "wires": [
+            [
+                "02c613ceb6f62731",
+                "067e5ed69af62289"
+            ]
+        ]
+    },
+    {
+        "id": "bfbbfa338920ed22",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "add topic pc_rpm2",
+        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm2\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 1680,
+        "wires": [
+            [
+                "02c613ceb6f62731",
+                "067e5ed69af62289"
+            ]
+        ]
+    },
+    {
+        "id": "44d8e1beb9700f62",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "add topic pc_rpm3",
+        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm3\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 1720,
+        "wires": [
+            [
+                "02c613ceb6f62731",
+                "067e5ed69af62289"
+            ]
+        ]
+    },
+    {
+        "id": "f2bbae09d3b7324c",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "add topic pc_rpm4",
+        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm4\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 1760,
+        "wires": [
+            [
+                "02c613ceb6f62731",
+                "067e5ed69af62289"
+            ]
+        ]
+    },
+    {
+        "id": "aaf04a893769efe2",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "add topic pc_rpm5",
+        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm5\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 1800,
+        "wires": [
+            [
+                "02c613ceb6f62731",
+                "067e5ed69af62289"
+            ]
+        ]
+    },
+    {
+        "id": "7a18439c0f724b2a",
+        "type": "serial-port",
+        "name": "ArduinoUNOR3",
+        "serialport": "COM4",
+        "serialbaud": "115200",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "1301eee028a47c91",
+        "type": "ui_group",
+        "name": "RPM",
+        "tab": "dc9a020eadb0312f",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4f18e0d3bf6d0fb2",
+        "type": "ui_group",
+        "name": "Temperatures",
+        "tab": "dc9a020eadb0312f",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "217574afafff9f4a",
+        "type": "ui_group",
+        "name": "Options",
+        "tab": "dc9a020eadb0312f",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "78141955d389409a",
+        "type": "ui_group",
+        "name": "Slider",
+        "tab": "dc9a020eadb0312f",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dc9a020eadb0312f",
+        "type": "ui_tab",
+        "name": "Gauge",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
