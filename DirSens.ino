@@ -1,3 +1,4 @@
+/* Multiple DS18B20 1-Wire digital temperature sensors with Arduino example code. More info: https://www.makerguides.com */
 //ESTE CÓDIGO ES PARA LA LECTURA DE DIRECCIONES DE LOS SENSORES
 
 // Include the required Arduino libraries:
@@ -19,7 +20,7 @@ DeviceAddress deviceAddress; // variable to store the device address
 
 void setup() {
   // Begin serial communication at a baud rate of 9600:
-  Serial.begin(115200);
+  Serial.begin(9600);
   // Start up the library:
   sensorT.begin();
 
@@ -56,3 +57,9 @@ void printAddress(DeviceAddress deviceAddress) {
   }
   Serial.println();
 }
+
+/*
+14:08:23.842 -> Sensor 1 : 0x28, 0x61, 0x64, 0x09, 0x54, 0x3B, 0xC8, 0x94
+14:08:23.875 -> Sensor 2 : 0x28, 0xFF, 0x64, 0x1D, 0xF2, 0x7C, 0xDD, 0x70
+14:08:23.940 -> Sensor 3 : 0x28, 0xFF, 0x64, 0x1D, 0xFD, 0x97, 0x70, 0x2B
+*/
