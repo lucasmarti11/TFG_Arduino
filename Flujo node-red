@@ -587,8 +587,8 @@
         "name": "Temp3",
         "group": "4f18e0d3bf6d0fb2",
         "order": 3,
-        "width": "4",
-        "height": "4",
+        "width": "6",
+        "height": "6",
         "gtype": "gage",
         "title": " Temperatura Sensor 3",
         "label": "ºC",
@@ -615,8 +615,8 @@
         "name": "Temp2",
         "group": "4f18e0d3bf6d0fb2",
         "order": 2,
-        "width": "4",
-        "height": "4",
+        "width": "6",
+        "height": "6",
         "gtype": "gage",
         "title": " Temperatura Sensor 2",
         "label": "ºC",
@@ -643,8 +643,8 @@
         "name": "Temp1",
         "group": "4f18e0d3bf6d0fb2",
         "order": 1,
-        "width": "4",
-        "height": "4",
+        "width": "6",
+        "height": "6",
         "gtype": "gage",
         "title": " Temperatura Sensor 1",
         "label": "ºC",
@@ -702,13 +702,13 @@
         ],
         "payload": "",
         "topic": "mode",
-        "topicType": "msg",
+        "topicType": "str",
         "className": "",
-        "x": 650,
-        "y": 1580,
+        "x": 710,
+        "y": 1540,
         "wires": [
             [
-                "de29a2f818aad6f4"
+                "02c613ceb6f62731"
             ]
         ]
     },
@@ -726,16 +726,16 @@
         "passthru": false,
         "outs": "end",
         "topic": "pc_rpm2",
-        "topicType": "msg",
+        "topicType": "str",
         "min": 0,
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 640,
-        "y": 1680,
+        "x": 720,
+        "y": 1660,
         "wires": [
             [
-                "bfbbfa338920ed22"
+                "02c613ceb6f62731"
             ]
         ]
     },
@@ -753,16 +753,16 @@
         "passthru": false,
         "outs": "end",
         "topic": "pc_rpm3",
-        "topicType": "msg",
+        "topicType": "str",
         "min": 0,
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 640,
-        "y": 1720,
+        "x": 720,
+        "y": 1700,
         "wires": [
             [
-                "44d8e1beb9700f62"
+                "02c613ceb6f62731"
             ]
         ]
     },
@@ -780,16 +780,16 @@
         "passthru": false,
         "outs": "end",
         "topic": "pc_rpm4",
-        "topicType": "msg",
+        "topicType": "str",
         "min": 0,
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 640,
-        "y": 1760,
+        "x": 720,
+        "y": 1740,
         "wires": [
             [
-                "f2bbae09d3b7324c"
+                "02c613ceb6f62731"
             ]
         ]
     },
@@ -807,16 +807,16 @@
         "passthru": false,
         "outs": "end",
         "topic": "pc_rpm5",
-        "topicType": "msg",
+        "topicType": "str",
         "min": 0,
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 640,
-        "y": 1800,
+        "x": 720,
+        "y": 1780,
         "wires": [
             [
-                "aaf04a893769efe2"
+                "02c613ceb6f62731"
             ]
         ]
     },
@@ -834,16 +834,16 @@
         "passthru": false,
         "outs": "end",
         "topic": "pc_rpm1",
-        "topicType": "msg",
+        "topicType": "str",
         "min": 0,
         "max": "100",
         "step": 1,
         "className": "",
-        "x": 640,
-        "y": 1640,
+        "x": 720,
+        "y": 1620,
         "wires": [
             [
-                "21f96865224a0e4d"
+                "02c613ceb6f62731"
             ]
         ]
     },
@@ -855,12 +855,12 @@
         "property": "payload",
         "action": "str",
         "pretty": false,
-        "x": 1570,
+        "x": 1210,
         "y": 1620,
         "wires": [
             [
-                "50c2af7c35a70e3c",
-                "bf48de0ce8ce4aad"
+                "bf48de0ce8ce4aad",
+                "5a611aed7ec5e2a9"
             ]
         ]
     },
@@ -870,7 +870,7 @@
         "z": "2c2a0c084ad3c41e",
         "name": "",
         "serial": "7a18439c0f724b2a",
-        "x": 1800,
+        "x": 1720,
         "y": 1620,
         "wires": []
     },
@@ -887,8 +887,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1460,
-        "y": 1480,
+        "x": 1120,
+        "y": 1540,
         "wires": []
     },
     {
@@ -896,7 +896,7 @@
         "type": "debug",
         "z": "2c2a0c084ad3c41e",
         "name": "debug 6",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -904,23 +904,23 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1820,
-        "y": 1480,
+        "x": 1380,
+        "y": 1540,
         "wires": []
     },
     {
         "id": "02c613ceb6f62731",
         "type": "function",
         "z": "2c2a0c084ad3c41e",
-        "name": "Save Number 2",
-        "func": "\ncontext.set(msg.topic,msg.payload);\n\nmsg.payload = {\n\n    \"mode\": context.get(\"mode\"),\n\n    \"pc_rpm1\": context.get(\"pc_rpm1\"),\n\n    \"pc_rpm2\": context.get(\"pc_rpm2\"),\n\n    \"pc_rpm3\": context.get(\"pc_rpm3\"),\n\n    \"pc_rpm4\": context.get(\"pc_rpm4\"),\n\n    \"pc_rpm5\": context.get(\"pc_rpm5\")\n\n}\nreturn msg;",
+        "name": "Save String JSON",
+        "func": "\ncontext.set(msg.topic,msg.payload);\n\nmsg.payload = {\n\n    \"mode\": context.get(\"mode\"),\n\n    \"effect\": context.get(\"effect\"),\n\n    \"pc_rpm1\": context.get(\"pc_rpm1\"),\n\n    \"pc_rpm2\": context.get(\"pc_rpm2\"),\n\n    \"pc_rpm3\": context.get(\"pc_rpm3\"),\n\n    \"pc_rpm4\": context.get(\"pc_rpm4\"),\n\n    \"pc_rpm5\": context.get(\"pc_rpm5\")\n\n}\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
-        "initialize": "// El código añadido aquí se ejecutará una vez\n// cuando el nodo es iniciado.\n\ncontext.set(\"mode\", 0);\n\ncontext.set(\"pc_rpm1\", 0);\n\ncontext.set(\"pc_rpm2\", 0);\n\ncontext.set(\"pc_rpm3\", 0);\n\ncontext.set(\"pc_rpm4\", 0);\n\ncontext.set(\"pc_rpm5\", 0);",
+        "initialize": "// El código añadido aquí se ejecutará una vez\n// cuando el nodo es iniciado.\n\ncontext.set(\"mode\", 1);\n\ncontext.set(\"effect\", 0);\n\ncontext.set(\"pc_rpm1\", 0);\n\ncontext.set(\"pc_rpm2\", 0);\n\ncontext.set(\"pc_rpm3\", 0);\n\ncontext.set(\"pc_rpm4\", 0);\n\ncontext.set(\"pc_rpm5\", 0);",
         "finalize": "",
         "libs": [],
-        "x": 1200,
+        "x": 970,
         "y": 1620,
         "wires": [
             [
@@ -930,145 +930,97 @@
         ]
     },
     {
-        "id": "067e5ed69af62289",
+        "id": "5a611aed7ec5e2a9",
+        "type": "function",
+        "z": "2c2a0c084ad3c41e",
+        "name": "Add New Line",
+        "func": "msg.payload = msg.payload + \"\\n\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1480,
+        "y": 1620,
+        "wires": [
+            [
+                "50c2af7c35a70e3c",
+                "2758bfdd2641f627"
+            ]
+        ]
+    },
+    {
+        "id": "2758bfdd2641f627",
         "type": "debug",
         "z": "2c2a0c084ad3c41e",
         "name": "debug 7",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1180,
-        "y": 1720,
+        "x": 1680,
+        "y": 1540,
         "wires": []
     },
     {
-        "id": "de29a2f818aad6f4",
-        "type": "function",
+        "id": "970f26b4ff8ac7f7",
+        "type": "ui_dropdown",
         "z": "2c2a0c084ad3c41e",
-        "name": "add topic mode",
-        "func": "var enter_message = msg.payload;\n\nvar tema = \"mode\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 880,
+        "name": "LED_Effect_Dropdown",
+        "label": "Led Effect List",
+        "tooltip": "Choose LED effect",
+        "place": "Choose LED effect",
+        "group": "217574afafff9f4a",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "multiple": false,
+        "options": [
+            {
+                "label": "RGB_LOOP",
+                "value": 0,
+                "type": "num"
+            },
+            {
+                "label": "FADEINOUT",
+                "value": 1,
+                "type": "num"
+            },
+            {
+                "label": "STROBE",
+                "value": 2,
+                "type": "num"
+            },
+            {
+                "label": "CYLONBOUNCE",
+                "value": 3,
+                "type": "num"
+            },
+            {
+                "label": "NEWKITT",
+                "value": 4,
+                "type": "num"
+            },
+            {
+                "label": "TWINKLE",
+                "value": "5",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "effect",
+        "topicType": "str",
+        "className": "",
+        "x": 700,
         "y": 1580,
         "wires": [
             [
-                "067e5ed69af62289",
                 "02c613ceb6f62731"
-            ]
-        ]
-    },
-    {
-        "id": "21f96865224a0e4d",
-        "type": "function",
-        "z": "2c2a0c084ad3c41e",
-        "name": "add topic pc_rpm1",
-        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm1\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 890,
-        "y": 1640,
-        "wires": [
-            [
-                "02c613ceb6f62731",
-                "067e5ed69af62289"
-            ]
-        ]
-    },
-    {
-        "id": "bfbbfa338920ed22",
-        "type": "function",
-        "z": "2c2a0c084ad3c41e",
-        "name": "add topic pc_rpm2",
-        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm2\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 890,
-        "y": 1680,
-        "wires": [
-            [
-                "02c613ceb6f62731",
-                "067e5ed69af62289"
-            ]
-        ]
-    },
-    {
-        "id": "44d8e1beb9700f62",
-        "type": "function",
-        "z": "2c2a0c084ad3c41e",
-        "name": "add topic pc_rpm3",
-        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm3\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 890,
-        "y": 1720,
-        "wires": [
-            [
-                "02c613ceb6f62731",
-                "067e5ed69af62289"
-            ]
-        ]
-    },
-    {
-        "id": "f2bbae09d3b7324c",
-        "type": "function",
-        "z": "2c2a0c084ad3c41e",
-        "name": "add topic pc_rpm4",
-        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm4\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 890,
-        "y": 1760,
-        "wires": [
-            [
-                "02c613ceb6f62731",
-                "067e5ed69af62289"
-            ]
-        ]
-    },
-    {
-        "id": "aaf04a893769efe2",
-        "type": "function",
-        "z": "2c2a0c084ad3c41e",
-        "name": "add topic pc_rpm5",
-        "func": "var enter_message = msg.payload;\n\nvar tema = \"pc_rpm5\";\n\nvar exit_message = {\n    payload : enter_message,\n    topic : tema\n};\n\n\nreturn exit_message;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 890,
-        "y": 1800,
-        "wires": [
-            [
-                "02c613ceb6f62731",
-                "067e5ed69af62289"
             ]
         ]
     },
@@ -1099,7 +1051,7 @@
         "tab": "dc9a020eadb0312f",
         "order": 1,
         "disp": true,
-        "width": "12",
+        "width": "10",
         "collapse": false,
         "className": ""
     },
@@ -1121,7 +1073,7 @@
         "tab": "dc9a020eadb0312f",
         "order": 3,
         "disp": true,
-        "width": "6",
+        "width": "10",
         "collapse": false,
         "className": ""
     },
@@ -1132,7 +1084,7 @@
         "tab": "dc9a020eadb0312f",
         "order": 4,
         "disp": true,
-        "width": "6",
+        "width": "10",
         "collapse": false,
         "className": ""
     },
