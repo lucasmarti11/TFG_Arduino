@@ -1,11 +1,11 @@
 #include <FastLED.h>
 
-typedef enum {RGB_LOOP, FADEINOUT, STROBE, CYLONBOUNCE, NEWKITT, TWINKLE} Led_Effects_t;
+typedef enum {RGB_LOOP, FADEINOUT, STROBE, CYLONBOUNCE, NEWKITT, TWINKLE} Led_Effect_t;
 
 const uint8_t PIN_LEDs = A2;
 const uint8_t NUM_LEDs = 60;
 
-Led_Effects_t ef_led = RGB_LOOP;
+Led_Effect_t current_effect = RGB_LOOP;
 
 byte bright = 50;
 byte baza = 0;
