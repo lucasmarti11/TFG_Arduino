@@ -16,8 +16,8 @@ const uint8_t PIN_RPM1 = A0;
 const uint8_t PIN_PWM1 = 3; //Freqüència PWM = 490Hz
 const uint8_t PIN_FAN1 = 5; //Freqüència PWM = 980Hz
 const uint8_t PIN_FAN2 = 6; //Freqüència PWM = 980Hz
-const uint8_t PIN_FAN3 = 8; 
-const uint8_t PIN_RPM3 = 9; //Freqüència PWM = 490Hz
+const uint8_t PIN_RPM3 = 8; 
+const uint8_t PIN_FAN3 = 9; //Freqüència PWM = 490Hz
 const uint8_t PIN_FAN4 = 10; //Freqüència PWM = 490Hz
 const uint8_t PIN_FAN5 = 11; //Freqüència PWM = 490Hz
 const uint8_t PIN_RPM4 = 12;
