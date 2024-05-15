@@ -1,0 +1,18 @@
+#include "Led.h"
+
+const uint8_t PIN_LEDs = A2;
+const uint8_t NUM_LEDs = 19;
+
+Led_Effect_t current_effect = RGB_LOOP;
+
+Led Led1(PIN_LEDs, NUM_LEDs, current_effect);
+
+void setup() {
+  Led1.begin();
+}
+
+void loop() {
+
+  Led1.selectEffect(current_effect);
+
+}
