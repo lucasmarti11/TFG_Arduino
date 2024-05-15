@@ -1,0 +1,493 @@
+//Incluimos librerías
+
+#include <stdio.h>
+#include "Fan.h"
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <FastLED.h>
+#include <ArduinoJson.h>
+
+//Creamos tipo de variables
+
+typedef enum {RGB_LOOP, FADEINOUT, STROBE, CYLONBOUNCE, NEWKITT, TWINKLE} Led_Effect_t;
+
+//Creamos constantes y variables
+
+const uint8_t PIN_DTemp = A3;
+const uint8_t PIN_LEDs = A2;
+const uint8_t PIN_RPM2 = A1;
+const uint8_t PIN_RPM1 = A0;
+const uint8_t PIN_PWM1 = 3; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN1 = 5; //Freqüència PWM = 980Hz
+const uint8_t PIN_FAN2 = 6; //Freqüència PWM = 980Hz
+const uint8_t PIN_RPM3 = 8; 
+const uint8_t PIN_FAN3 = 9; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN4 = 10; //Freqüència PWM = 490Hz
+const uint8_t PIN_FAN5 = 11; //Freqüència PWM = 490Hz
+const uint8_t PIN_RPM4 = 12;
+const uint8_t PIN_RPM5 = 13;
+
+const uint8_t NUM_LEDs = 19;
+Led_Effect_t current_effect = FADEINOUT;
+byte bright = 50;
+byte baza = 0;
+CRGB leds[NUM_LEDs];
+
+FanType_t type_fan1 = FourPins_Soft;
+FanType_t type_fan2 = FourPins_Hard;
+FanType_t type_fan3 = FourPins_Hard;
+FanType_t type_fan4 = ThreePins;
+FanType_t type_fan5 = ThreePins;
+
+Operation_Mode_t mode_fan = NORMAL;
+
+uint16_t rpm_fan1 = 0;
+uint16_t rpm_fan2 = 0;
+uint16_t rpm_fan3 = 0;
+uint16_t rpm_fan4 = 0;
+uint16_t rpm_fan5 = 0;
+
+uint8_t rpm_fan1_percent = 0; //Per quan es rebi per part de l'interfície gràfica
+uint8_t rpm_fan2_percent = 0;
+uint8_t rpm_fan3_percent = 0;
+uint8_t rpm_fan4_percent = 0;
+uint8_t rpm_fan5_percent = 0;
+
+float temp_sensor1 = 0.0;
+float temp_sensor2 = 0.0;
+float temp_sensor3 = 0.0;
+ //Variable para pruebas
+bool sentido = true;
+
+char data[300];
+int data_index = 0;
+
+Fan Fan1(type_fan1, PIN_RPM1, PIN_FAN1, PIN_PWM1);
+Fan Fan2(type_fan2, PIN_RPM2, PIN_FAN2);
+Fan Fan3(type_fan3, PIN_RPM3, PIN_FAN3);
+Fan Fan4(type_fan4, PIN_RPM4, PIN_FAN4);
+Fan Fan5(type_fan5, PIN_RPM5, PIN_FAN5);
+
+
+const word PWM_FREQ_HZ = 25000; //Adjust this value to adjust the frequency
+const word TCNT1_TOP = 16000000/(2*PWM_FREQ_HZ);
+
+const word OCRA_TOP = 1;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  while (!Serial) continue;
+
+  // Clear Timer1 control and count registers PHASE CORRECT PWM perque el calcul ho permet
+  TCCR1A = 0;
+  TCCR1B = 0;
+  TCNT1  = 0;
+
+  // Set Timer1 configuration
+  // COM1A(1:0) = 0b10   (Output A clear rising/set falling)
+  // COM1B(1:0) = 0b00   (Output B normal operation)
+  // WGM(13:10) = 0b1010 (Phase correct PWM)
+  // ICNC1      = 0b0    (Input capture noise canceler disabled)
+  // ICES1      = 0b0    (Input capture edge select disabled)
+  // CS(12:10)  = 0b001  (Input clock select = clock/1)
+  
+  TCCR1A |= (1 << COM1A1) | (1 << WGM11);
+  TCCR1B |= (1 << WGM13) | (1 << CS10);
+  ICR1 = TCNT1_TOP;
+
+  //PHASE CORRECT PWM Mod Perque el calcul ho permet
+
+  TCCR2A = 0;
+  TCCR2B = 0;
+  OCR2A  = 0;
+  TCNT2 = 0;
+
+  TCCR2A |= (1 << COM2A1) | (1 << WGM20);
+  TCCR2B |= (0 << WGM22) | (1 << CS20);
+  OCR2A = OCRA_TOP;
+
+  Fan1.begin();
+  Fan2.begin();
+  Fan3.begin();
+  Fan4.begin();
+  Fan5.begin();
+
+  pinMode(PIN_LEDs, OUTPUT);
+  FastLED.addLeds <WS2812, PIN_LEDs, GRB>(leds, NUM_LEDs).setCorrection(TypicalLEDStrip); 
+  FastLED.setBrightness(50);
+}
+
+void loop() {
+
+
+  Fan1.setFanSpeed(mode_fan, temp_sensor1, rpm_fan1_percent);
+  Fan2.setFanSpeed(mode_fan, temp_sensor2, rpm_fan2_percent);
+  Fan3.setFanSpeed(mode_fan, temp_sensor2, rpm_fan3_percent);
+  Fan4.setFanSpeed(mode_fan, temp_sensor3, rpm_fan4_percent);
+  Fan5.setFanSpeed(mode_fan, temp_sensor3, rpm_fan5_percent);
+
+  //Fan1.measureRPM();
+  Fan2.measureRPM();
+  Fan3.measureRPM();
+  Fan4.measureRPM();
+  Fan5.measureRPM();
+
+  //rpm_fan1 = Fan1.getRPM();
+  rpm_fan2 = Fan2.getRPM();
+  rpm_fan3 = Fan3.getRPM();
+  rpm_fan4 = Fan4.getRPM();
+  rpm_fan5 = Fan5.getRPM();
+
+  if(temp_sensor1 <= 85.0 && sentido == true){
+    temp_sensor1 += 0.5;
+    temp_sensor2 += 0.5;
+    temp_sensor3 += 0.5;
+    if(temp_sensor1 == 85.0){
+      sentido = false;
+    }
+  }
+  if(temp_sensor1 >= 0.0 && sentido == false){
+    temp_sensor1 -= 0.5;
+    temp_sensor2 -= 0.5;
+    temp_sensor3 -= 0.5;
+    if(temp_sensor1 == 0.0){
+      sentido = true;
+    }
+  }
+
+  sendData();
+
+  while(Serial.available() > 0){
+    char character = Serial.read();
+    if (character != '\n')
+    {
+      data[data_index] = character;
+      data_index ++;
+    }else{
+      receiveData(data, data_index);
+      data_index = 0;
+    }
+  }
+
+ /* switch(current_effect){
+    case RGB_LOOP:
+      RGBLoop();
+      break;
+    case FADEINOUT:
+      FadeInOut(0xff, 0x00, 0x00); // red
+      FadeInOut(0xff, 0xff, 0xff); // white 
+      FadeInOut(0x00, 0x00, 0xff); // blue
+      break;
+    case STROBE:
+      Strobe(0xff, 0xff, 0xff, 10, 50, 1000);
+      break;
+    case CYLONBOUNCE:
+      CylonBounce(0xff, 0x00, 0x00, 4, 10, 50);
+      break;
+    case NEWKITT:
+      NewKITT(0xff, 0x00, 0x00, 8, 10, 50);
+      break;
+    case TWINKLE:
+      Twinkle(0xff, 0x00, 0x00, 10, 100, false);
+      break;
+    default:
+       break;
+  }*/
+
+  /*Serial.print("Revoluciones FAN 1: ");
+  Serial.println(rpm_fan1);
+
+  Serial.print("Revoluciones FAN 2: ");
+  Serial.println(rpm_fan2);
+
+  Serial.print("Revoluciones FAN 3: ");
+  Serial.println(rpm_fan3);
+
+  Serial.print("Revoluciones FAN 4: ");
+  Serial.println(rpm_fan4);
+
+  Serial.print("Revoluciones FAN 5: ");
+  Serial.println(rpm_fan5);
+
+  analogWrite(PIN_FAN3, 140); //Funciona igual a 25kHz
+  analogWrite(PIN_FAN4, 140);
+  analogWrite(PIN_FAN5, 140);*/ //Funciona A 31.33kHz
+}
+
+//*********************AUXILIAR FUNCTIONS***********************************
+
+void sendData(){
+  StaticJsonDocument<300> doc1;
+  
+  doc1["Temp1"] = temp_sensor1;
+  doc1["Temp2"] = temp_sensor2;
+  doc1["Temp3"] = temp_sensor3;
+  doc1["rpm1"] = rpm_fan1;
+  doc1["rpm2"] = rpm_fan2;
+  doc1["rpm3"] = rpm_fan3;  
+  doc1["rpm4"] = rpm_fan4;
+  doc1["rpm5"] = rpm_fan5;
+
+  serializeJson(doc1, Serial);
+
+  Serial.println();
+}
+
+void receiveData(char* data1, int index){
+
+   StaticJsonDocument<300> doc2;
+  //char json3[] = {"mode":2,"effect":2,"pc_rpm1":14,"pc_rpm2":13,"pc_rpm3":14,"pc_rpm4":16,"pc_rpm5":15}; Formato que funciona para recibir
+  //char json[index];
+
+  char json[index + 1];
+
+  //Amb el seguen bucle el que es vol aconseguir es llevar les comilles de l'inici i del final del string json que genera node red
+  for(int i = 0; i < index; i++){
+    json[i] = data1[i];
+  }
+  
+  for (int j = 0; j < index; j++) {
+    if (json[j] == '\0') {
+      // Si encontramos un carácter nulo, lo establecemos y salimos del ciclo
+      json[j] = '\0';
+      break;
+    }
+  }
+
+  /*Serial.print("El mensaje JSON recibido es: ");
+  Serial.println(json);*/
+
+  DeserializationError error = deserializeJson(doc2, json);
+
+  if (error) {
+    return;
+  }
+
+  mode_fan = doc2["mode"];
+  current_effect = doc2["effect"];
+  //rpm_fan1_percent = doc2["pc_rpm1"]; es la fdorma correcte però estic fent proves amb la interficie
+  rpm_fan1 = doc2["pc_rpm1"];
+  rpm_fan2_percent = doc2["pc_rpm2"];
+  rpm_fan3_percent = doc2["pc_rpm3"];
+  rpm_fan4_percent = doc2["pc_rpm4"];
+  rpm_fan5_percent = doc2["pc_rpm5"];
+
+  /*Serial.println("Received Data: ");
+  Serial.println(mode_fan);
+  Serial.println(current_effect);                                                                                                                                                                                               
+  Serial.println(rpm_fan1);
+  //Serial.println(rpm_fan1_percent);
+  Serial.println(rpm_fan2_percent);
+  Serial.println(rpm_fan3_percent);
+  Serial.println(rpm_fan4_percent);
+  Serial.println(rpm_fan5_percent);
+  delay(5000);*/
+}
+
+/*
+// *************************
+// ** LEDEffect Functions **
+// *************************
+void RGBLoop(){
+  for(int j = 0; j < 3; j++ ) { 
+    // Fade IN
+    for(int k = 0; k < 256; k++) { 
+      switch(j) { 
+        case 0: setAll(k,0,0); break;
+        case 1: setAll(0,k,0); break;
+        case 2: setAll(0,0,k); break;
+      }
+      showStrip();
+      delay(3);
+    }
+    // Fade OUT
+    for(int k = 255; k >= 0; k--) { 
+      switch(j) { 
+        case 0: setAll(k,0,0); break;
+        case 1: setAll(0,k,0); break;
+        case 2: setAll(0,0,k); break;
+      }
+      showStrip();
+      delay(3);
+    }
+  }
+}
+void FadeInOut(byte red, byte green, byte blue){
+  float r, g, b;
+      
+  for(int k = 0; k < 256; k=k+1) { 
+    r = (k/256.0)*red;
+    g = (k/256.0)*green;
+    b = (k/256.0)*blue;
+    setAll(r,g,b);
+    showStrip();
+  }
+     
+  for(int k = 255; k >= 0; k=k-2) {
+    r = (k/256.0)*red;
+    g = (k/256.0)*green;
+    b = (k/256.0)*blue;
+    setAll(r,g,b);
+    showStrip();
+  }
+}
+void Strobe(byte red, byte green, byte blue, int StrobeCount, int FlashDelay, int EndPause){
+  for(int j = 0; j < StrobeCount; j++) {
+    setAll(red,green,blue);
+    showStrip();
+    delay(FlashDelay);
+    setAll(0,0,0);
+    showStrip();
+    delay(FlashDelay);
+  }
+ 
+ delay(EndPause);
+}
+void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+  for(int i = 0; i < NUM_LEDs-EyeSize-2; i++) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+  for(int i = NUM_LEDs-EyeSize-2; i > 0; i--) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  
+  delay(ReturnDelay);
+}
+void NewKITT(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  RightToLeft(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+}
+// used by NewKITT
+void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i =((NUM_LEDs-EyeSize)/2); i>=0; i--) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDs-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDs-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDs-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+// used by NewKITT
+void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i<=((NUM_LEDs-EyeSize)/2); i++) {
+    setAll(0,0,0);
+    
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    
+    setPixel(NUM_LEDs-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(NUM_LEDs-i-j, red, green, blue); 
+    }
+    setPixel(NUM_LEDs-i-EyeSize-1, red/10, green/10, blue/10);
+    
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+// used by NewKITT
+void LeftToRight(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i < NUM_LEDs-EyeSize-2; i++) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+// used by NewKITT
+void RightToLeft(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = NUM_LEDs-EyeSize-2; i > 0; i--) {
+    setAll(0,0,0);
+    setPixel(i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(i+j, red, green, blue); 
+    }
+    setPixel(i+EyeSize+1, red/10, green/10, blue/10);
+    showStrip();
+    delay(SpeedDelay);
+  }
+  delay(ReturnDelay);
+}
+void Twinkle(byte red, byte green, byte blue, int Count, int SpeedDelay, boolean OnlyOne) {
+  setAll(0,0,0);
+  
+  for (int i=0; i<Count; i++) {
+     setPixel(random(NUM_LEDs),red,green,blue);
+     showStrip();
+     delay(SpeedDelay);
+     if(OnlyOne) { 
+       setAll(0,0,0); 
+     }
+   }
+  
+  delay(SpeedDelay);
+}
+// ***************************************
+// ** FastLed Common Functions **
+// ***************************************
+// Aplicam els canvis realitzats als LEDs
+void showStrip() {
+   FastLED.show();
+}
+// Establim un color de LED
+void setPixel(int Pixel, byte red, byte green, byte blue) {
+   leds[Pixel].r = red;
+   leds[Pixel].g = green;
+   leds[Pixel].b = blue;
+}
+// Establim un color a tots els LEDs i l'aplicam (visible)
+void setAll(byte red, byte green, byte blue) {
+  for(int i = 0; i < NUM_LEDs; i++ ) {
+    setPixel(i, red, green, blue); 
+  }
+  showStrip();
+}
+
+*/
+
+//*********************AUXILIAR FUNCTIONS***********************************
+
