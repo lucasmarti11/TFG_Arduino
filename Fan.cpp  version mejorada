@@ -1,0 +1,113 @@
+#include "Fan.h"
+
+/*******************************************************************************
+ ** Initializations
+ ******************************************************************************/
+
+Fan::Fan(FanType_t type, uint8_t pin_rpm, uint8_t pin_fan, uint8_t pin_pwm = 0)
+{ 
+  type_    = type;
+  pin_fan_ = pin_fan;
+  pin_rpm_ = pin_rpm;
+  pin_pwm_ = pin_pwm;
+
+  last_pwm_value = 0;
+
+  rpm_ = 0;
+  start_time_ = 0;
+
+  half_revs = 0;
+
+  current_value = LOW;
+  last_value = LOW;
+
+}
+
+
+void Fan::begin()
+{
+  pinMode(pin_rpm_, INPUT);
+  pinMode(pin_fan_, OUTPUT);
+  if( pin_pwm_ != 0 ){
+    pinMode(pin_pwm_, OUTPUT); 
+  }
+
+  start_time_ = millis();
+}
+
+
+/*
+ *
+ *
+ */
+void Fan::measureRPM(){
+
+  // llegim l'entrada una única vegada enlloc de fer-ho dues vegades si no és compleix el primer if
+  last_value = current_value;
+  current_value = digitalRead(pin_rpm_);
+  countHalfRevs(current_value, last_value);
+
+  unsigned long elapsed = millis() - start_time_;
+
+  if(elapsed >= 1000){
+    unsigned long end_time = millis();
+    double correction_factor = 1000.0/elapsed;
+    rpm_ = ((correction_factor * half_revs * 60) / 2 );
+    start_time_ = millis();
+    half_revs = 0;
+
+  }
+}
+
+void Fan::setFanSpeed(Operation_Mode_t oper_mode, uint8_t temperature, uint8_t percent){
+  int pwm_value;
+  pwm_value = calculateFanSpeed(oper_mode, temperature, percent);
+  if(oper_mode == MANUAL){
+    if(pin_pwm_ != 0){
+      analogWrite(pin_pwm_, pwm_value);
+      digitalWrite(pin_fan_, HIGH);
+    }else{
+      analogWrite(pin_fan_, pwm_value);
+    }
+  }else{
+    if(last_pwm_value >= (pwm_value + 5) || pwm_value >= (last_pwm_value + 5)){
+      if(pin_pwm_ != 0){
+        analogWrite(pin_pwm_, pwm_value); // Com es fa pel cas del jumper: Ara enviam com toca cap el jumper, pero ara el jumper ha de redirigir cap el circuit
+        digitalWrite(pin_fan_, HIGH);
+      }else{
+        analogWrite(pin_fan_, pwm_value);
+      }
+    }
+  }
+  last_pwm_value = pwm_value;
+}
+
+uint8_t Fan::calculateFanSpeed(Operation_Mode_t oper_mode, uint8_t temperature, uint8_t percent){
+  int pwm_value;
+  switch ( oper_mode )
+  {
+    case MANUAL:
+      pwm_value = map(percent, 0, 100, 150, 255);
+      break;
+    case SILENT:
+      pwm_value = map(temperature, 55, 85, 150, 255);
+      break;
+    case NORMAL:
+      pwm_value = map(temperature, 45, 85, 150, 255); //Com a valor minim de PWM establim 101 ja que sera el valor minim el qual fara que el venmtilador giri minimament
+      break;
+    case GAMING:
+      pwm_value = map(temperature, 35, 75, 150, 255); //Baixam el rang de temperatura per a que s'activi abans ja que es suposa que estirem exigint molt a la computadora
+      break;
+    default:
+      break;
+  }
+  return pwm_value;
+  
+}
+
+void Fan::countHalfRevs(int current_value_, int last_value_){
+  if(current_value_ == HIGH && last_value_ == LOW){
+    half_revs++;
+  }
+}
+
