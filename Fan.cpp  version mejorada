@@ -43,14 +43,16 @@ void Fan::begin()
 void Fan::measureRPM(){
 
   // llegim l'entrada una única vegada enlloc de fer-ho dues vegades si no és compleix el primer if
+
   last_value = current_value;
   current_value = digitalRead(pin_rpm_);
-  countHalfRevs(current_value, last_value);
+
+  current2 = digitalRead(pin_rpm_);
+  countHalfRevs();
 
   unsigned long elapsed = millis() - start_time_;
 
   if(elapsed >= 1000){
-    unsigned long end_time = millis();
     double correction_factor = 1000.0/elapsed;
     rpm_ = ((correction_factor * half_revs * 60) / 2 );
     start_time_ = millis();
@@ -105,9 +107,8 @@ uint8_t Fan::calculateFanSpeed(Operation_Mode_t oper_mode, uint8_t temperature, 
   
 }
 
-void Fan::countHalfRevs(int current_value_, int last_value_){
-  if(current_value_ == HIGH && last_value_ == LOW){
+void Fan::countHalfRevs(){
+  if(current_value == HIGH && last_value == LOW && current2 == HIGH ){
     half_revs++;
   }
 }
-
