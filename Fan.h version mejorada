@@ -38,6 +38,7 @@ class Fan {
     uint16_t  rpm_;
     uint16_t half_revs;
     int current_value;
+    int current2;
     int last_value;
 
     int last_pwm_value;
@@ -46,8 +47,7 @@ class Fan {
 
     uint8_t calculateFanSpeed(Operation_Mode_t oper_mode, uint8_t temperature, uint8_t percent = 0);
 
-    void countHalfRevs(int current_value_, int last_value_);
+    void countHalfRevs();
 };
 
 #endif
-
