@@ -6,8 +6,8 @@
         <mxCell id="1" parent="0" />
         <mxCell id="Apf7Qada8jQOgv6dITaP-2" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.994;exitY=0.694;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="240" y="400.0799999999999" as="sourcePoint" />
-            <mxPoint x="330" y="400" as="targetPoint" />
+            <mxPoint x="240" y="388.0799999999999" as="sourcePoint" />
+            <mxPoint x="330" y="388" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Apf7Qada8jQOgv6dITaP-4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
@@ -27,20 +27,20 @@
         </mxCell>
         <mxCell id="Apf7Qada8jQOgv6dITaP-8" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.994;exitY=0.694;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="240" y="234.57999999999993" as="sourcePoint" />
-            <mxPoint x="330" y="234.5" as="targetPoint" />
+            <mxPoint x="240" y="224.57999999999993" as="sourcePoint" />
+            <mxPoint x="330" y="224.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Apf7Qada8jQOgv6dITaP-10" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.994;exitY=0.694;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="240" y="564.5799999999999" as="sourcePoint" />
-            <mxPoint x="330" y="564.5" as="targetPoint" />
+            <mxPoint x="240" y="554.5799999999999" as="sourcePoint" />
+            <mxPoint x="330" y="554.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Apf7Qada8jQOgv6dITaP-12" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.994;exitY=0.694;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="240" y="727.0799999999999" as="sourcePoint" />
-            <mxPoint x="330" y="727" as="targetPoint" />
+            <mxPoint x="240" y="717.0799999999999" as="sourcePoint" />
+            <mxPoint x="330" y="717" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Apf7Qada8jQOgv6dITaP-15" value="IC" style="shadow=0;dashed=0;align=center;html=1;strokeWidth=1;shape=mxgraph.electrical.logic_gates.dual_inline_ic;labelNames=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t;whiteSpace=wrap;" vertex="1" parent="1">
@@ -143,7 +143,34 @@
           <mxGeometry x="50" y="70" width="140" height="70" as="geometry" />
         </mxCell>
         <mxCell id="Apf7Qada8jQOgv6dITaP-37" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="330" y="50" width="240" height="750" as="geometry" />
+          <mxGeometry x="330" y="182.5" width="240" height="567.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-38" value="Controller" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="155" y="155" width="60" height="17.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-39" value="Controller" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="155" y="320" width="60" height="17.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-40" value="Controller" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="155" y="485" width="60" height="17.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-41" value="Controller" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="155" y="649" width="60" height="17.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-42" value="LoRaWAN Gateway Device&lt;div&gt;Milesight SG-50&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="366.25" y="220.25" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-50" value="Application Logic" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="366.25" y="324.75" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-51" value="Connection Agents" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="366.25" y="430.75" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-52" value="Linux OS" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="366.25" y="537.25" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Apf7Qada8jQOgv6dITaP-53" value="CPU" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="368.75" y="642.25" width="165" height="70" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
