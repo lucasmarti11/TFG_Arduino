@@ -1,9 +1,12 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
   <diagram name="Página-1" id="vq6Jij6qqW_bc8KwVzxN">
-    <mxGraphModel dx="825" dy="447" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="2060" dy="483" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="QfdqI6-0rXCY0TVJnFzW-1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-10" y="30" width="1370" height="770" as="geometry" />
+        </mxCell>
         <mxCell id="Apf7Qada8jQOgv6dITaP-2" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.994;exitY=0.694;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="240" y="388.0799999999999" as="sourcePoint" />
@@ -479,16 +482,16 @@
         <mxCell id="4wUuc6z473N0XOS7GZkT-31" value="Looker Studio" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1275" y="567" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-3" value="Real-time&lt;div&gt;data&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-3" value="Real-time&lt;div&gt;data&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="790" y="483" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-4" value="Data storage &amp;amp; analysis" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-4" value="Data storage &amp;amp; analysis" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="900" y="622.5" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-5" value="Event triggering" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-5" value="Event triggering" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="867" y="351.5" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-6" value="Data&lt;div&gt;visualization&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="Nx8pLAvWwU1s1sSMiNX9-6" value="Data&lt;div&gt;visualization&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="1145" y="542" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
